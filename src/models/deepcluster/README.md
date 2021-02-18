@@ -20,49 +20,10 @@ Finally, this code also includes a visualisation module that allows to assess vi
 
 ## Requirements
 
-- a Python installation version 2.7
-- the SciPy and scikit-learn packages
 - a PyTorch install version 0.1.8 ([pytorch.org](http://pytorch.org))
 - CUDA 8.0
 - a Faiss install ([Faiss](https://github.com/facebookresearch/faiss))
 - The ImageNet dataset (which can be automatically downloaded by recent version of [torchvision](https://pytorch.org/docs/stable/torchvision/datasets.html#imagenet))
-
-## Pre-trained models
-We provide pre-trained models with AlexNet and VGG-16 architectures, available for download.
-* The models in Caffe format expect BGR inputs that range in [0, 255]. You do not need to subtract the per-color-channel mean image since the preprocessing of the data is already included in our released models.
-* The models in PyTorch format expect RGB inputs that range in [0, 1]. You should preprocessed your data before passing them to the released models by normalizing them: ```mean_rgb = [0.485, 0.456, 0.406]```; ```std_rgb = [0.229, 0.224, 0.225] ```
-Note that in all our released models, sobel filters are computed within the models as two convolutional layers (greyscale + sobel filters).
-
-You can download all variants by running 
-```
-$ ./download_model.sh
-```
-This will fetch the models into `${HOME}/deepcluster_models` by default.
-You can change that path in the environment variable.
-Direct download links are provided here:
-* [AlexNet-PyTorch](https://dl.fbaipublicfiles.com/deepcluster/alexnet/checkpoint.pth.tar)
-* [AlexNet-prototxt](https://dl.fbaipublicfiles.com/deepcluster/alexnet/model.prototxt) + [AlexNet-caffemodel](https://dl.fbaipublicfiles.com/deepcluster/alexnet/model.caffemodel)
-* [VGG16-PyTorch](https://dl.fbaipublicfiles.com/deepcluster/vgg16/checkpoint.pth.tar)
-* [VGG16-prototxt](https://dl.fbaipublicfiles.com/deepcluster/vgg16/model.prototxt) + [VGG16-caffemodel](https://dl.fbaipublicfiles.com/deepcluster/vgg16/model.caffemodel)
-
-We also provide the last epoch cluster assignments for these models. After downloading, open the file with Python 2:
-```
-import pickle
-with open("./alexnet_cluster_assignment.pickle", "rb") as f:
-    b = pickle.load(f)
-```
-If you're a Python 3 user, specify ```encoding='latin1'``` in the load fonction.
-Each file is a list of (image path, cluster_index) tuples.
-* [AlexNet-clusters](https://dl.fbaipublicfiles.com/deepcluster/alexnet/alexnet_cluster_assignment.pickle)
-* [VGG16-clusters](https://dl.fbaipublicfiles.com/deepcluster/vgg16/vgg16_cluster_assignment.pickle)
-
-Finally, we release the features extracted with DeepCluster model for ImageNet dataset.
-These features are in dimension 4096 and correspond to a forward on the model up to the penultimate convolutional layer (just before last ReLU).
-In you plan to cluster the features, don't forget to normalize and reduce/whiten them.
-* [AlexNet-imnetfeatures](https://dl.fbaipublicfiles.com/deepcluster/alexnet/alexnet_features.pkl)
-* [VGG16-imnetfeatures](https://dl.fbaipublicfiles.com/deepcluster/vgg16/vgg16_features.pkl)
-
-## Running the unsupervised training
 
 Unsupervised training can be launched by running:
 ```
